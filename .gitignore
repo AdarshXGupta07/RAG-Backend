@@ -1,0 +1,26 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables / Credentials
+.env
+.env.local
+.env.*
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Local Uploads
+uploads/
+
+# Logs
+*.log
+
+# IDE Settings
+.vscode/
+.idea/

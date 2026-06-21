@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Candidate ka naam kya hai?",
+    "expected_answer": "Adarsh Gupta",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate kis university mein padh raha hai?",
+    "expected_answer": "SRM Institute of Science and Technology, Kattankulathur",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate ka degree program kya hai?",
+    "expected_answer": "B.Tech in Computer Science Engineering",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate kis year se kis year tak B.Tech kar raha hai?",
+    "expected_answer": "2024–2028 (Expected)",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate kin programming languages mein skilled hai?",
+    "expected_answer": "Java, JavaScript, TypeScript",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate ne kaunsi backend technologies use ki hain?",
+    "expected_answer": "Node.js, Express.js, Spring Boot",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate ne AI integration ke liye kaunse APIs use kiye hain?",
+    "expected_answer": "OpenAI API and Gemini API",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate ka AI-powered SaaS project kis stage mein hai?",
+    "expected_answer": "In Progress",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "DevConnect project ka primary purpose kya hai?",
+    "expected_answer": "Real-time developer chat application",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "InternTrack project kis technology stack par bana hai?",
+    "expected_answer": "React, Spring Boot, MySQL, JWT, Chart.js",
+    "expected_source_document": "Adarsh_Gupta_Resume.pdf"
+  },
+  {
+    "question": "Candidate ke paas kitne saal ka professional experience hai?",
+    "expected_answer": "I don't know",
+    "expected_source_document": "NONE"
+  },
+  {
+    "question": "Candidate ki current company ka naam kya hai?",
+    "expected_answer": "I don't know",
+    "expected_source_document": "NONE"
+  },
+  {
+    "question": "Candidate ki salary kitni hai?",
+    "expected_answer": "I don't know",
+    "expected_source_document": "NONE"
+  },
+  {
+    "question": "Candidate ne Google mein internship ki hai kya?",
+    "expected_answer": "I don't know",
+    "expected_source_document": "NONE"
+  },
+  {
+    "question": "Candidate ka birth year kya hai?",
+    "expected_answer": "I don't know",
+    "expected_source_document": "NONE"
+  }
+]
