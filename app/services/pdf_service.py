@@ -1,12 +1,10 @@
 import io
-import re
-from pdfminer.high_level import extract_text
+import fitz  # PyMuPDF
 
 def extract_text_from_pdf(file_bytes: bytes):
-    pdf_file = io.BytesIO(file_bytes)
-    text = extract_text(pdf_file)
-    
-    # Double character fix: "wwoorrdd" → "word"
-    text = re.sub(r'(.)\1+', r'\1', text)
-    
+    doc = fitz.open(stream=file_bytes, filetype="pdf")
+    text = ""
+    for page in doc:
+        text += page.get_text()
+    doc.close()
     return text
