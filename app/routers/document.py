@@ -20,6 +20,7 @@ SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
 @router.post("/upload")
 @limiter.limit("20/minute")
 async def upload_file(
@@ -29,7 +30,7 @@ async def upload_file(
     current_user: User = Depends(get_current_user)
 ):
     if file.content_type not in ALLOWED_CONTENT_TYPES:
-        raise HTTPException(status_code=400, detail=f"File type allowed nahi hai.")
+        raise HTTPException(status_code=400, detail="File type allowed nahi hai.")
 
     file_bytes = await file.read()
 
@@ -59,10 +60,13 @@ async def upload_file(
     db.commit()
     db.refresh(document)
 
-    process_document.delay(
+    # Celery task queue karo
+    print(f"Queuing task for document {document.id}")
+    result = process_document.delay(
         document_id=str(document.id),
         tenant_id=str(current_user.tenant_id)
     )
+    print(f"Task queued with ID: {result.id}")
 
     return {
         "document_id": document.id,
