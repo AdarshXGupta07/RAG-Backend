@@ -1,4 +1,7 @@
 # Main application entry point
+import os
+import uuid
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers.auth import router as auth_router
@@ -8,12 +11,13 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from app.core.limiter import limiter
-import uuid
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.core.logging_config import setup_logging, request_id_var
 from app.routers import health
 
-setup_logging()  # app start hote hi logging configure ho jaaye
+load_dotenv(override=False)
+setup_logging()
+
 
 class RequestIdMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
@@ -24,11 +28,9 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         request_id_var.reset(token)
         return response
 
-# ✅ app yahan banao — sabse pehle, kisi bhi app.xxx() call se pehle
+
 app = FastAPI()
 
-# ✅ CORS middleware — loaded dynamically from environment
-import os
 origins_env = os.getenv("CORS_ORIGINS")
 if origins_env:
     origins = [o.strip() for o in origins_env.split(",")]
@@ -36,7 +38,7 @@ else:
     origins = [
         "http://localhost:5173",
         "http://localhost:5174",
-        "http://localhost:3000"
+        "http://localhost:3000",
     ]
 
 app.add_middleware(
