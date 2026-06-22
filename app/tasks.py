@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
+
 import httpx
 from app.celery_app import celery_app
 from app.database import SessionLocal
@@ -22,15 +23,13 @@ def process_document(self, document_id: str, tenant_id: str):
         document.status = "processing"
         db.commit()
 
-        # ✅ file path se bytes padho
         if document.file_path.startswith("http"):
             response = httpx.get(document.file_path)
             file_bytes = response.content
         else:
             with open(document.file_path, "rb") as f:
-            file_bytes = f.read()
+                file_bytes = f.read()
 
-        # ✅ bytes pass karo
         text = extract_text_from_pdf(file_bytes)
         chunks = chunk_text(text)
 
