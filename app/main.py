@@ -35,17 +35,12 @@ origins_env = os.getenv("CORS_ORIGINS")
 if origins_env:
     origins = [o.strip() for o in origins_env.split(",")]
 else:
-    origins = [
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:3000",
-        "https://rag-platform-llm.netlify.app",
-    ]
+    origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

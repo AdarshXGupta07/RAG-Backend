@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
 import os, uuid
-from supabase import create_client
 
 from app.tasks import process_document
 from app.core.limiter import limiter
@@ -15,10 +14,17 @@ router = APIRouter(prefix="/documents", tags=["documents"])
 ALLOWED_CONTENT_TYPES = {"application/pdf", "text/plain"}
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 
-# Supabase client
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+def get_supabase():
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise HTTPException(status_code=500, detail="Supabase not configured on server")
+    try:
+        from supabase import create_client
+        return create_client(SUPABASE_URL, SUPABASE_KEY)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Supabase init failed: {str(e)}")
 
 
 @router.post("/upload")
@@ -41,6 +47,7 @@ async def upload_file(
     file_id = str(uuid.uuid4())
     storage_path = f"{current_user.tenant_id}/{file_id}_{file.filename}"
 
+    supabase = get_supabase()
     supabase.storage.from_("documents").upload(
         path=storage_path,
         file=file_bytes,
