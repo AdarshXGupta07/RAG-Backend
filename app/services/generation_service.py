@@ -1,45 +1,45 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()  # ← PEHLI LINE honi chahiye, client se pehle
+load_dotenv()
 
 from groq import Groq
 from typing import List, Dict
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+
 def build_prompt(query: str, chunks: List[Dict]) -> str:
-    """
-    Chunks ko numbered sources mein format karo
-    """
     context = ""
     for i, chunk in enumerate(chunks, 1):
         context += f"[Source {i}] (File: {chunk['filename']})\n"
         context += f"{chunk['content']}\n\n"
 
-    prompt = f"""You are a helpful assistant. Answer the user's question using ONLY the provided sources below.
+    prompt = f"""You are an expert document analysis assistant working for a company.
+Answer the user's question using ONLY the provided sources below.
 
 Rules:
-- Answer only from the given sources
-- Cite sources using [Source N] format inline
+- Give a DETAILED, COMPREHENSIVE answer — minimum 3-4 paragraphs for complex questions
+- Use bullet points, numbered lists, or headings where it improves clarity
+- Cite sources inline using [Source N] format
+- Explain technical concepts thoroughly — do not give one-liner answers
+- If the answer spans multiple sources, synthesize them into a coherent response
 - If the answer is not in the sources, say "I don't have enough information in the provided documents to answer this."
-- Do not make up information
+- Never make up information not present in the sources
 
 Sources:
 {context}
 
 Question: {query}
 
-Answer:"""
+Provide a thorough, well-structured answer:"""
 
     return prompt
 
 
 def generate_answer(query: str, chunks: List[Dict]) -> Dict:
-    """
-    Groq se answer generate karo with citations
-    """
     if not chunks:
         return {
-            "answer": "No relevant documents found for your query.",
+            "answer": "No relevant documents found for your query. Please upload relevant documents first.",
             "citations": []
         }
 
@@ -50,15 +50,20 @@ def generate_answer(query: str, chunks: List[Dict]) -> Dict:
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant that answers questions based only on provided document sources."
+                "content": (
+                    "You are an expert document analysis AI assistant for a company platform. "
+                    "You provide detailed, structured, and accurate answers based strictly on provided document sources. "
+                    "Your answers should be thorough and professional — never give vague or one-line responses."
+                )
             },
             {
                 "role": "user",
                 "content": prompt
             }
         ],
-        temperature=0.1,  # low temperature = factual, less creative
-        max_tokens=1000
+        temperature=0.3,   # 0.1 → 0.3: thoda flexible, better phrasing
+        max_tokens=2048,   # 1000 → 2048: detailed answers ke liye
+        top_p=0.9
     )
 
     answer = response.choices[0].message.content

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/query", tags=["query"])
 
 class QueryRequest(BaseModel):
     question: str
-    top_k: int = 5  # kitne chunks retrieve karein
+    top_k: int = 8  # kitne chunks retrieve karein
 
 @limiter.limit("10/minute") 
 @router.post("/")
